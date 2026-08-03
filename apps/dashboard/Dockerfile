@@ -10,6 +10,7 @@ FROM turbo-cli AS builder
 WORKDIR /app
 # Copy all files
 COPY . .
+RUN test -f .git-commit-sha || echo "unknown" > .git-commit-sha
 # Prune dashboard workspace
 RUN turbo prune @midday/dashboard --docker
 

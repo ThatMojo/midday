@@ -9,6 +9,7 @@ RUN bun add -g turbo
 FROM turbo-cli AS builder
 WORKDIR /app
 COPY . .
+RUN test -f .git-commit-sha || echo "unknown" > .git-commit-sha
 RUN turbo prune @midday/api --docker
 
 # Installer stage - install deps and build
