@@ -36,6 +36,7 @@ import {
   selectPromptColumns,
 } from "@midday/import";
 import { triggerJob } from "@midday/job-client";
+import { logger } from "@midday/logger";
 import { TRPCError } from "@trpc/server";
 import { generateObject } from "ai";
 
@@ -55,12 +56,22 @@ export const transactionsRouter = createTRPCRouter({
   get: protectedProcedure
     .input(getTransactionsSchema)
     .query(async ({ input, ctx: { db, teamId } }) => {
-      return getTransactions(db, {
+      logger.info("[DEBUG transactions.get] input", {
+        teamId,
+        input: JSON.stringify(input),
+      });
+      const result = await getTransactions(db, {
         ...input,
         exported: input.exported ?? undefined,
         fulfilled: input.fulfilled ?? undefined,
         teamId: teamId!,
       });
+      logger.info("[DEBUG transactions.get] result", {
+        teamId,
+        dataLength: result?.data?.length,
+        meta: JSON.stringify(result?.meta),
+      });
+      return result;
     }),
 
   getById: protectedProcedure
