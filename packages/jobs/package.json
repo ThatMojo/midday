@@ -29,6 +29,7 @@
     "heic-convert": "catalog:",
     "node-xlsx": "catalog:",
     "sharp": "catalog:",
+    "stripe": "^20.4.1",
     "trigger.dev": "4.4.3",
     "zod": "catalog:"
   },

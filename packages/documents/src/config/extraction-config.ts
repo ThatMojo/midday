@@ -7,7 +7,7 @@ import {
 import { invoiceSchema, receiptSchema } from "../schema";
 import type { DocumentFormat } from "../utils/format-detection";
 
-export type AIProvider = "mistral" | "google";
+export type AIProvider = "mistral" | "google" | "openai";
 
 export interface ModelConfig {
   provider: AIProvider;
@@ -40,9 +40,9 @@ export interface ExtractionConfig<T extends z.ZodSchema> {
 export const invoiceConfig: ExtractionConfig<typeof invoiceSchema> = {
   schema: invoiceSchema,
   models: {
-    primary: { provider: "google", model: "gemini-3-flash-preview" },
-    secondary: { provider: "google", model: "gemini-3-pro-preview" },
-    tertiary: { provider: "mistral", model: "mistral-small-latest" },
+    primary: { provider: "openai", model: "gpt-5-mini" },
+    secondary: { provider: "google", model: "gemini-3-flash-preview" },
+    tertiary: { provider: "google", model: "gemini-3-pro-preview" },
   },
   timeout: 180000, // 3 minutes
   retries: 2, // 2 retries (3 total attempts)
@@ -85,9 +85,9 @@ export const invoiceConfig: ExtractionConfig<typeof invoiceSchema> = {
 export const receiptConfig: ExtractionConfig<typeof receiptSchema> = {
   schema: receiptSchema,
   models: {
-    primary: { provider: "google", model: "gemini-3-flash-preview" },
-    secondary: { provider: "google", model: "gemini-3-pro-preview" },
-    tertiary: { provider: "mistral", model: "mistral-small-latest" },
+    primary: { provider: "openai", model: "gpt-5-mini" },
+    secondary: { provider: "google", model: "gemini-3-flash-preview" },
+    tertiary: { provider: "google", model: "gemini-3-pro-preview" },
   },
   timeout: 20000, // 20s for image processing
   retries: 2, // 2 retries (3 total attempts)

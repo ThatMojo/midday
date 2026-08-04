@@ -1,5 +1,6 @@
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { createMistral } from "@ai-sdk/mistral";
+import { createOpenAI } from "@ai-sdk/openai";
 import { createLoggerWithContext } from "@midday/logger";
 import { generateObject } from "ai";
 import type { z } from "zod/v4";
@@ -19,6 +20,10 @@ const google = createGoogleGenerativeAI({
 
 const mistral = createMistral({
   apiKey: process.env.MISTRAL_API_KEY!,
+});
+
+const openai = createOpenAI({
+  apiKey: process.env.OPENAI_API_KEY!,
 });
 
 /**
@@ -98,17 +103,27 @@ export abstract class BaseExtractionEngine<T extends z.ZodSchema> {
     const model =
       modelConfig.provider === "mistral"
         ? mistral(modelConfig.model)
-        : google(modelConfig.model);
+        : modelConfig.provider === "openai"
+          ? openai(modelConfig.model)
+          : google(modelConfig.model);
 
     // Provider-specific options
-    const providerOptions =
+    const providerOptions: Record<string, Record<string, unknown>> | undefined =
       modelConfig.provider === "mistral"
         ? {
             mistral: {
               documentPageLimit: 10,
             },
           }
-        : undefined;
+        : modelConfig.provider === "openai"
+          ? {
+              // Field extraction is a straightforward task - skip the extra
+              // reasoning tokens a "minimal" effort would otherwise spend.
+              openai: {
+                reasoningEffort: "minimal",
+              },
+            }
+          : undefined;
 
     const result = await retryCall(
       () =>
@@ -128,7 +143,9 @@ export abstract class BaseExtractionEngine<T extends z.ZodSchema> {
             },
           ],
           ...(providerOptions && { providerOptions }),
-        }),
+          // biome-ignore lint/suspicious/noExplicitAny: generateObject's overload
+          // resolution can't narrow providerOptions across the abstract T schema
+        } as any),
       this.config.retries,
       2000, // Start with 2s delay
     );
@@ -253,7 +270,9 @@ export abstract class BaseExtractionEngine<T extends z.ZodSchema> {
     const model =
       modelConfig.provider === "mistral"
         ? mistral(modelConfig.model)
-        : google(modelConfig.model);
+        : modelConfig.provider === "openai"
+          ? openai(modelConfig.model)
+          : google(modelConfig.model);
 
     // Send extracted text as text content (not file)
     const result = await retryCall(
@@ -394,7 +413,9 @@ export abstract class BaseExtractionEngine<T extends z.ZodSchema> {
             const model =
               modelConfig.provider === "mistral"
                 ? mistral(modelConfig.model)
-                : google(modelConfig.model);
+                : modelConfig.provider === "openai"
+                  ? openai(modelConfig.model)
+                  : google(modelConfig.model);
 
             const result = await retryCall(
               () =>
@@ -482,7 +503,9 @@ export abstract class BaseExtractionEngine<T extends z.ZodSchema> {
             const model =
               modelConfig.provider === "mistral"
                 ? mistral(modelConfig.model)
-                : google(modelConfig.model);
+                : modelConfig.provider === "openai"
+                  ? openai(modelConfig.model)
+                  : google(modelConfig.model);
 
             const result = await retryCall(
               () =>
