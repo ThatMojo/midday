@@ -47,12 +47,17 @@ export const bankConnectionsRouter = createTRPCRouter({
         });
       }
 
-      const event = await tasks.trigger("initial-bank-setup", {
-        connectionId: data.id,
-        teamId: teamId!,
-      } satisfies InitialBankSetupPayload);
+      try {
+        await tasks.trigger("initial-bank-setup", {
+          connectionId: data.id,
+          teamId: teamId!,
+        } satisfies InitialBankSetupPayload);
+      } catch (error) {
+        // Trigger.dev not configured in this self-hosted deployment.
+        // The connection is saved either way; automatic sync just won't run.
+      }
 
-      return event;
+      return data;
     }),
 
   delete: protectedProcedure
@@ -67,11 +72,15 @@ export const bankConnectionsRouter = createTRPCRouter({
         throw new Error("Bank connection not found");
       }
 
-      await tasks.trigger("delete-connection", {
-        referenceId: data.referenceId,
-        provider: data.provider!,
-        accessToken: data.accessToken,
-      } satisfies DeleteConnectionPayload);
+      try {
+        await tasks.trigger("delete-connection", {
+          referenceId: data.referenceId,
+          provider: data.provider!,
+          accessToken: data.accessToken,
+        } satisfies DeleteConnectionPayload);
+      } catch (error) {
+        // Trigger.dev not configured in this self-hosted deployment.
+      }
 
       return data;
     }),
