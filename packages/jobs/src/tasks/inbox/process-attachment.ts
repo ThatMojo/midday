@@ -175,6 +175,7 @@ export const processAttachment = schemaTask({
         taxType: result.tax_type ?? undefined,
         type: result.type as "invoice" | "expense" | null | undefined,
         invoiceNumber: result.invoice_number ?? undefined,
+        meta: result.metadata ?? undefined,
         status: "analyzing", // Keep analyzing until matching is complete
       });
 

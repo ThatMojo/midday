@@ -48,9 +48,10 @@ export function ensureToolIndex(ctx: McpContext): Promise<ToolIndex<any>> {
       embeddingModel: openai.embeddingModel("text-embedding-3-small"),
       embeddingCache: fileCache(".toolpick-cache.json"),
       relatedTools: {
-        invoices_create: ["customers_list"],
+        invoices_create: ["customers_list", "inbox_list", "inbox_get"],
         invoices_create_from_tracker: ["customers_list"],
-        invoice_recurring_create: ["customers_list"],
+        invoice_recurring_create: ["customers_list", "inbox_list", "inbox_get"],
+        customers_create: ["inbox_list", "inbox_get"],
         tracker_timer_start: ["tracker_projects_list"],
         tracker_entries_create: ["tracker_projects_list"],
         tracker_entries_list: ["tracker_projects_list"],

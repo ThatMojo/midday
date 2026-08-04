@@ -223,6 +223,7 @@ export async function processInboxUpload(
       taxType: result.tax_type ?? undefined,
       type: result.type as "invoice" | "expense" | null | undefined,
       invoiceNumber: result.invoice_number ?? undefined,
+      meta: result.metadata ?? undefined,
       status: "analyzing",
     });
 

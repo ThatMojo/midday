@@ -1930,6 +1930,7 @@ export type UpdateInboxWithProcessedDataParams = {
   currency?: string;
   displayName?: string;
   website?: string;
+  meta?: Record<string, unknown>;
   date?: string;
   taxAmount?: number;
   taxRate?: number;
@@ -1978,6 +1979,7 @@ export async function updateInboxWithProcessedData(
       taxType: inbox.taxType,
       type: inbox.type,
       invoiceNumber: inbox.invoiceNumber,
+      meta: inbox.meta,
     });
 
   return result;
