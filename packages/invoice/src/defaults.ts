@@ -8,36 +8,36 @@
  * Default label values for invoice templates
  */
 export const DEFAULT_TEMPLATE_LABELS = {
-  customerLabel: "To",
-  title: "Invoice",
-  fromLabel: "From",
-  invoiceNoLabel: "Invoice No",
-  issueDateLabel: "Issue Date",
-  dueDateLabel: "Due Date",
-  descriptionLabel: "Description",
-  priceLabel: "Price",
-  quantityLabel: "Quantity",
-  totalLabel: "Total",
-  totalSummaryLabel: "Total",
-  vatLabel: "VAT",
-  subtotalLabel: "Subtotal",
-  taxLabel: "Tax",
-  discountLabel: "Discount",
-  paymentLabel: "Payment Details",
-  noteLabel: "Note",
-  lineItemTaxLabel: "Tax",
+  customerLabel: "An",
+  title: "Rechnung",
+  fromLabel: "Von",
+  invoiceNoLabel: "Rechnungsnr.",
+  issueDateLabel: "Rechnungsdatum",
+  dueDateLabel: "Fälligkeitsdatum",
+  descriptionLabel: "Beschreibung",
+  priceLabel: "Preis",
+  quantityLabel: "Menge",
+  totalLabel: "Gesamt",
+  totalSummaryLabel: "Gesamtsumme",
+  vatLabel: "MwSt.",
+  subtotalLabel: "Zwischensumme",
+  taxLabel: "Steuer",
+  discountLabel: "Rabatt",
+  paymentLabel: "Zahlungsdetails",
+  noteLabel: "Notiz",
+  lineItemTaxLabel: "Steuer",
 } as const;
 
 /**
  * Default settings for invoice templates
  */
 export const DEFAULT_TEMPLATE_SETTINGS = {
-  currency: "USD",
-  locale: "en-US",
-  dateFormat: "dd/MM/yyyy",
+  currency: "EUR",
+  locale: "de-DE",
+  dateFormat: "dd.MM.yyyy",
   size: "a4" as const,
   // Tax/VAT settings - default to false, user enables as needed
-  includeVat: false,
+  includeVat: true,
   includeTax: false,
   includeDiscount: false,
   includeLineItemTax: false,
@@ -68,7 +68,7 @@ export const DEFAULT_TEMPLATE = {
   ...DEFAULT_TEMPLATE_SETTINGS,
   // These are typically null/undefined by default
   logoUrl: null,
-  timezone: "UTC",
+  timezone: "Europe/Berlin",
   deliveryType: "create" as const,
   // Editor fields - null by default, user fills in
   paymentDetails: null,

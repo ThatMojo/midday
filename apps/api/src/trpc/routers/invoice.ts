@@ -286,7 +286,7 @@ export const invoiceRouter = createTRPCRouter({
         getUserById(db, session.user.id),
       ]);
 
-      const locale = user?.locale ?? geo?.locale ?? "en";
+      const locale = user?.locale ?? geo?.locale ?? "de";
       const timezone = user?.timezone ?? geo?.timezone ?? "America/New_York";
       const currency =
         template?.currency ?? team?.baseCurrency ?? defaultTemplate.currency;
