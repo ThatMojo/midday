@@ -73,10 +73,11 @@ export const enrichTransactions = schemaTask({
             schema: enrichmentSchema,
             temperature: 0.1, // Low temperature for consistency
             // Categorizing a transaction from its name/amount doesn't need
-            // deep reasoning - skip it to keep this fast and cheap.
+            // deep reasoning - "minimal" is the lowest effort gpt-5-nano
+            // supports (unlike other models, it rejects "none" outright).
             // biome-ignore lint/suspicious/noExplicitAny: providerOptions
             // typing fights generateObject's schema-dependent overloads
-            providerOptions: { openai: { reasoningEffort: "none" } } as any,
+            providerOptions: { openai: { reasoningEffort: "minimal" } } as any,
           });
 
           // Prepare updates for batch processing
