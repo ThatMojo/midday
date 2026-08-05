@@ -158,6 +158,7 @@ export async function getInbox(db: Database, params: GetInboxParams) {
       taxAmount: inbox.taxAmount,
       taxRate: inbox.taxRate,
       taxType: inbox.taxType,
+      meta: inbox.meta,
       relatedCount: sql<number>`(
         SELECT COUNT(*)::int
         FROM ${inbox} AS related

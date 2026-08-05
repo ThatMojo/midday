@@ -282,6 +282,7 @@ export const mcpInboxItemSchema = z.object({
   taxAmount: z.number().nullable().optional(),
   taxRate: z.number().nullable().optional(),
   taxType: z.string().nullable().optional(),
+  meta: z.any().nullable().optional(),
   relatedCount: z.number().nullable().optional(),
   inboxAccount: z
     .object({ provider: z.string().nullable() })
