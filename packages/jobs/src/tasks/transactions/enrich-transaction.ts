@@ -1,4 +1,4 @@
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { createOpenAI } from "@ai-sdk/openai";
 import { getDb } from "@jobs/init";
 import {
   generateEnrichmentPrompt,
@@ -19,8 +19,8 @@ import { z } from "zod";
 
 const BATCH_SIZE = 50;
 
-const google = createGoogleGenerativeAI({
-  apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY!,
+const openai = createOpenAI({
+  apiKey: process.env.OPENAI_API_KEY!,
 });
 
 export const enrichTransactions = schemaTask({
@@ -67,11 +67,16 @@ export const enrichTransactions = schemaTask({
 
         try {
           const { object } = await generateObject({
-            model: google("gemini-2.5-flash-lite"),
+            model: openai("gpt-5-nano"),
             prompt,
             output: "array",
             schema: enrichmentSchema,
             temperature: 0.1, // Low temperature for consistency
+            // Categorizing a transaction from its name/amount doesn't need
+            // deep reasoning - skip it to keep this fast and cheap.
+            // biome-ignore lint/suspicious/noExplicitAny: providerOptions
+            // typing fights generateObject's schema-dependent overloads
+            providerOptions: { openai: { reasoningEffort: "none" } } as any,
           });
 
           // Prepare updates for batch processing
